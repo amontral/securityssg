@@ -14,16 +14,17 @@ export default function App() {
   };
 
   return (
-    <div style={{ backgroundColor: '#0c0c0e', height: '100vh', color: 'white', position: 'relative', overflow: 'hidden', fontFamily: "'Segoe UI', 'Roboto', 'Arial Black', sans-serif" }}>
+    <div style={{ backgroundColor: '#0c0c0e', color: 'white', position: 'relative', overflow: 'hidden', fontFamily: "'Segoe UI', 'Roboto', 'Arial Black', sans-serif" }}>
+      {/* Fullscreen Particles Layer */}
       <Particles
         id="tsparticles"
         init={particlesInit}
         options={{
-          fullScreen: { enable: false },
           background: { color: '#0c0c0e' },
+          fullScreen: { enable: false },
           fpsLimit: 60,
           particles: {
-            number: { value: 75 },
+            number: { value: 80 },
             color: { value: '#ffffff' },
             links: { enable: true, color: '#ffffff', distance: 130 },
             move: { enable: true, speed: 0.6 },
@@ -31,10 +32,18 @@ export default function App() {
             size: { value: { min: 1, max: 3 } }
           }
         }}
-        style={{ position: 'absolute', zIndex: 0, width: '100%', height: '100%' }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
       />
 
-      {/* Navigation */}
+      {/* Top Navigation */}
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', gap: '2rem', padding: '1.5rem 1rem', flexWrap: 'wrap' }}>
         <button onClick={() => setShowOptions(true)} style={navButtonStyle}>Start Assessment</button>
         <Link to="/about" style={navButtonStyle}>About SBSS</Link>
@@ -42,7 +51,7 @@ export default function App() {
         <button onClick={() => { setShowContact(!showContact); setShowServices(false); }} style={navButtonStyle}>Contact</button>
       </div>
 
-      {/* Branding */}
+      {/* Branding Section */}
       <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', paddingTop: '100px' }}>
         <h1 style={{
           fontSize: '4.5rem',
@@ -57,7 +66,6 @@ export default function App() {
           Strategic Security. Real-World Results.
         </p>
 
-        {/* Assessment Type Selection */}
         {showOptions && (
           <div style={{ marginTop: '2rem' }}>
             <h3 style={{ color: 'lightgray' }}>Choose Assessment Type</h3>
