@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Particles from 'react-tsparticles';
@@ -17,23 +16,32 @@ export default function App() {
   };
 
   return (
-    <div style={{ backgroundColor: '#0c0c0e', height: '100vh', color: 'white', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ backgroundColor: '#0c0c0e', color: 'white', position: 'relative', overflowX: 'hidden' }}>
       <Particles
         id="tsparticles"
         init={particlesInit}
         options={{
           background: { color: '#0c0c0e' },
           fpsLimit: 60,
+          fullScreen: { enable: false },
           particles: {
+            number: { value: 60 },
             color: { value: '#ffffff' },
-            links: { enable: true, color: '#ffffff' },
-            move: { enable: true, speed: 0.5 },
-            number: { value: 50 },
-            opacity: { value: 0.2 },
-            size: { value: { min: 1, max: 3 } }
+            shape: { type: 'circle' },
+            opacity: { value: 0.3 },
+            size: { value: { min: 1, max: 3 } },
+            links: { enable: true, color: '#ffffff', distance: 100 },
+            move: { enable: true, speed: 1 }
           }
         }}
-        style={{ position: 'absolute', zIndex: 0 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 0,
+          height: '100%',
+          width: '100%',
+        }}
       />
 
       {/* Navigation Buttons */}
@@ -43,17 +51,17 @@ export default function App() {
         display: 'flex',
         justifyContent: 'center',
         gap: '2rem',
-        paddingTop: '1.5rem',
+        padding: '1.5rem 1rem',
         flexWrap: 'wrap'
       }}>
         <button onClick={() => setShowOptions(true)} style={navButtonStyle}>Start Assessment</button>
         <Link to="/about" style={navButtonStyle}>About SBSS</Link>
         <a href="#services" style={navButtonStyle}>Services</a>
-        <a href="mailto:silexstrategicgroup@gmail.com" style={navButtonStyle}>Contact</a>
+        <a href="#contact" style={navButtonStyle}>Contact</a>
       </div>
 
-      {/* Main Content */}
-      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', paddingTop: '120px' }}>
+      {/* Title and Assessment Selector */}
+      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', paddingTop: '100px' }}>
         <h1 style={{ fontSize: '3rem', fontWeight: 'bold' }}>Silex Strategic Group</h1>
         <p style={{ color: 'gray', marginBottom: '2rem' }}>Strategic Security. Real-World Results.</p>
 
@@ -66,6 +74,19 @@ export default function App() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Services Section */}
+      <div id="services" style={sectionStyle}>
+        <h2>Our Services</h2>
+        <p>Physical and Information Security Consulting</p>
+      </div>
+
+      {/* Contact Section */}
+      <div id="contact" style={sectionStyle}>
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:silexstrategicgroup@gmail.com" style={{ color: 'lightblue' }}>silexstrategicgroup@gmail.com</a></p>
+        <p>Phone: <a href="tel:5019527172" style={{ color: 'lightblue' }}>501-952-7172</a></p>
       </div>
     </div>
   );
@@ -89,4 +110,14 @@ const choiceBtnStyle = {
   borderRadius: '6px',
   fontWeight: 'bold',
   cursor: 'pointer'
+};
+
+const sectionStyle = {
+  position: 'relative',
+  zIndex: 1,
+  textAlign: 'center',
+  padding: '4rem 1rem 2rem',
+  backgroundColor: '#111',
+  marginTop: '4rem',
+  color: 'white'
 };
