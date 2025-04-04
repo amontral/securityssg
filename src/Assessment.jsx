@@ -1,15 +1,26 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+// src/Assessment.jsx
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const questions = [
-  { id: 'SBSS.Physical.1', question: 'Are all entrances secured with commercial-grade locks?' },
-  { id: 'SBSS.Physical.2', question: 'Are security cameras actively monitored or reviewed?' },
-  { id: 'SBSS.Physical.3', question: 'Is visitor access controlled and logged?' },
-  { id: 'SBSS.Physical.4', question: 'Are emergency exits clearly marked, unobstructed, and regularly inspected?' },
-  { id: 'SBSS.Physical.5', question: 'Is there a regularly updated access control list for sensitive areas?' }
-];
+const physicalQuestions = Array.from({ length: 25 }, (_, i) => ({
+  id: `SBSS.Physical.${i + 1}`,
+  question: `Physical security control question #${i + 1}`
+}));
+
+const infosecQuestions = Array.from({ length: 25 }, (_, i) => ({
+  id: `SBSS.InfoSec.${i + 1}`,
+  question: `Information security control question #${i + 1}`
+}));
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export default function Assessment() {
+  const query = useQuery();
+  const type = query.get('type');
+  const questions = type === 'infosec' ? infosecQuestions : physicalQuestions;
+
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -17,7 +28,7 @@ export default function Assessment() {
 
   const handleAnswer = (value) => {
     const q = questions[current];
-    setAnswers(prev => ({ ...prev, [q.id]: value }));
+    setAnswers((prev) => ({ ...prev, [q.id]: value }));
     if (current < questions.length - 1) {
       setCurrent(current + 1);
     } else {
@@ -27,12 +38,22 @@ export default function Assessment() {
   };
 
   const calculateScore = (allAnswers) => {
-    const yesCount = Object.values(allAnswers).filter(val => val === 'yes').length;
+    const yesCount = Object.values(allAnswers).filter((val) => val === 'yes').length;
     const percent = (yesCount / questions.length) * 100;
     if (percent >= 85) setScore('Secure');
     else if (percent >= 60) setScore('Needs Improvement');
     else setScore('At-Risk');
   };
+
+  if (!type) {
+    return (
+      <div style={{ padding: '2rem', color: 'white', backgroundColor: '#0c0c0e', minHeight: '100vh' }}>
+        <h2>Invalid Assessment Type</h2>
+        <p>Please go back and select an assessment type.</p>
+        <Link to="/" style={{ color: 'lightblue' }}>← Back to Home</Link>
+      </div>
+    );
+  }
 
   if (submitted) {
     const color = score === 'Secure' ? 'green' : score === 'Needs Improvement' ? 'gold' : 'red';
@@ -65,6 +86,9 @@ export default function Assessment() {
         <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
           <button onClick={() => handleAnswer('yes')} style={{ background: 'green', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '6px', fontWeight: 'bold' }}>Yes</button>
           <button onClick={() => handleAnswer('no')} style={{ background: 'red', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '6px', fontWeight: 'bold' }}>No</button>
+        </div>
+        <div style={{ marginTop: '2rem' }}>
+          <Link to="/" style={{ color: 'lightblue', textDecoration: 'underline' }}>← Back</Link>
         </div>
       </div>
     </div>
