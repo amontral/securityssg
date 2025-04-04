@@ -5,6 +5,8 @@ import { loadFull } from 'tsparticles';
 
 export default function App() {
   const [showOptions, setShowOptions] = useState(false);
+  const [showServices, setShowServices] = useState(false);
+  const [showContact, setShowContact] = useState(false);
   const navigate = useNavigate();
 
   const particlesInit = async (main) => {
@@ -16,57 +18,55 @@ export default function App() {
   };
 
   return (
-    <div style={{ backgroundColor: '#0c0c0e', color: 'white', position: 'relative', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#0c0c0e', height: '100vh', color: 'white', position: 'relative', overflow: 'hidden', fontFamily: "'Orbitron', sans-serif" }}>
+      {/* Load Google Fonts */}
+      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
+
+      {/* Particles Background */}
       <Particles
         id="tsparticles"
         init={particlesInit}
         options={{
           background: { color: '#0c0c0e' },
-          fpsLimit: 60,
           fullScreen: { enable: false },
+          fpsLimit: 60,
           particles: {
-            number: { value: 60 },
             color: { value: '#ffffff' },
-            shape: { type: 'circle' },
-            opacity: { value: 0.3 },
-            size: { value: { min: 1, max: 3 } },
-            links: { enable: true, color: '#ffffff', distance: 100 },
-            move: { enable: true, speed: 1 }
-          }
+            links: { enable: true, color: '#ffffff', distance: 130 },
+            move: { enable: true, speed: 1 },
+            opacity: { value: 0.2 },
+            size: { value: { min: 1, max: 2 } },
+          },
         }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          zIndex: 0,
-          height: '100%',
-          width: '100%',
-        }}
+        style={{ position: 'absolute', zIndex: 0, width: '100%', height: '100%' }}
       />
 
-      {/* Navigation Buttons */}
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '2rem',
-        padding: '1.5rem 1rem',
-        flexWrap: 'wrap'
-      }}>
+      {/* Top Nav */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', gap: '2rem', padding: '1.5rem 1rem', flexWrap: 'wrap' }}>
         <button onClick={() => setShowOptions(true)} style={navButtonStyle}>Start Assessment</button>
         <Link to="/about" style={navButtonStyle}>About SBSS</Link>
-        <a href="#services" style={navButtonStyle}>Services</a>
-        <a href="#contact" style={navButtonStyle}>Contact</a>
+        <button onClick={() => { setShowServices(!showServices); setShowContact(false); }} style={navButtonStyle}>Services</button>
+        <button onClick={() => { setShowContact(!showContact); setShowServices(false); }} style={navButtonStyle}>Contact</button>
       </div>
 
-      {/* Title and Assessment Selector */}
+      {/* Centered Branding */}
       <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', paddingTop: '100px' }}>
-        <h1 style={{ fontSize: '3rem', fontWeight: 'bold' }}>Silex Strategic Group</h1>
-        <p style={{ color: 'gray', marginBottom: '2rem' }}>Strategic Security. Real-World Results.</p>
+        <h1 style={{
+          fontSize: '4.5rem',
+          fontWeight: '900',
+          letterSpacing: '0.05em',
+          textShadow: '0 0 15px rgba(255,255,255,0.25)',
+          marginBottom: '1rem'
+        }}>
+          Silex Strategic Group
+        </h1>
+        <p style={{ color: '#aaa', fontSize: '1.2rem' }}>
+          Strategic Security. Real-World Results.
+        </p>
 
+        {/* Assessment Choice */}
         {showOptions && (
-          <div>
+          <div style={{ marginTop: '2rem' }}>
             <h3 style={{ color: 'lightgray' }}>Choose Assessment Type</h3>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
               <button onClick={() => handleAssessmentChoice('physical')} style={choiceBtnStyle}>Physical Security</button>
@@ -76,18 +76,22 @@ export default function App() {
         )}
       </div>
 
-      {/* Services Section */}
-      <div id="services" style={sectionStyle}>
-        <h2>Our Services</h2>
-        <p>Physical and Information Security Consulting</p>
-      </div>
+      {/* Conditional Services */}
+      {showServices && (
+        <div style={sectionStyle}>
+          <h2>Our Services</h2>
+          <p>Physical and Information Security Consulting</p>
+        </div>
+      )}
 
-      {/* Contact Section */}
-      <div id="contact" style={sectionStyle}>
-        <h2>Contact Us</h2>
-        <p>Email: <a href="mailto:silexstrategicgroup@gmail.com" style={{ color: 'lightblue' }}>silexstrategicgroup@gmail.com</a></p>
-        <p>Phone: <a href="tel:5019527172" style={{ color: 'lightblue' }}>501-952-7172</a></p>
-      </div>
+      {/* Conditional Contact */}
+      {showContact && (
+        <div style={sectionStyle}>
+          <h2>Contact Us</h2>
+          <p>Email: <a href="mailto:silexstrategicgroup@gmail.com" style={{ color: 'lightblue' }}>silexstrategicgroup@gmail.com</a></p>
+          <p>Phone: <a href="tel:5019527172" style={{ color: 'lightblue' }}>501-952-7172</a></p>
+        </div>
+      )}
     </div>
   );
 }
